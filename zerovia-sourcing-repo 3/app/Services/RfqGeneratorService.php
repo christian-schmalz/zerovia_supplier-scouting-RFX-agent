@@ -31,7 +31,7 @@ class RfqGeneratorService
             $supplier = $item['supplier'];
             $doc->recipients()->create([
                 'supplier_id' => $supplier->id,
-                'email'       => $supplier->email ?? 'procurement@' . ($supplier->website ?? 'supplier.ch'),
+                'email'       => $supplier->email ?? ($supplier->website ? 'procurement@' . $supplier->website : null),
             ]);
         }
 
@@ -70,7 +70,8 @@ class RfqGeneratorService
         })->implode("\n\n");
 
         $supEmails = $suppliers
-            ->map(fn ($item) => $item['supplier']->email ?? 'procurement@' . $item['supplier']->website)
+            ->map(fn ($item) => $item['supplier']->email ?? ($item['supplier']->website ? 'procurement@' . $item['supplier']->website : null))
+            ->filter()
             ->implode(', ');
 
         $fmt = fn ($date) => $date->format('d.m.Y');
