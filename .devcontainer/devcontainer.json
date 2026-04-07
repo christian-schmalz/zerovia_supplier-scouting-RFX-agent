@@ -1,0 +1,23 @@
+{
+  "name": "ZEROvia Sourcing",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "ZEROvia App",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postStartCommand": "cd 'zerovia-sourcing-repo 3' && php artisan serve --host=0.0.0.0 --port=8000 &",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "shufo.vscode-blade-formatter"
+      ]
+    }
+  }
+}
