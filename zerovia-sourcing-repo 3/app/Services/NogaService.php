@@ -33,7 +33,7 @@ class NogaService
             if (!file_exists($path)) {
                 return collect();
             }
-            return collect(json_decode(file_get_contents($path), true));
+            return collect(json_decode(file_get_contents($path), true) ?? []);
         });
     }
 
@@ -42,7 +42,8 @@ class NogaService
      */
     public function label(string $code): string
     {
-        return $this->all()
-            ->firstWhere('code', $code)['de'] ?? $code;
+        $entry = $this->all()->firstWhere('code', $code);
+
+        return $entry['de'] ?? $code;
     }
 }

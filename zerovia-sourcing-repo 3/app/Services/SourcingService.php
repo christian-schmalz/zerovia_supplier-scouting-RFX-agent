@@ -55,7 +55,7 @@ class SourcingService
                 return $filtered->isNotEmpty() ? $filtered : $collection; // fallback if no category match
             })
             ->sortByDesc('score')
-            ->take($topN * 3)
+            ->take($topN)
             ->values();
     }
 

@@ -17,11 +17,15 @@ class RfqDispatchService
             ->whereNull('sent_at')
             ->with('supplier')
             ->each(function (RfqRecipient $recipient) use ($doc, $introText, &$sent) {
-                Mail::to($recipient->email)
-                    ->queue(new RfqMail($doc, $recipient, $introText));
+                try {
+                    Mail::to($recipient->email)
+                        ->queue(new RfqMail($doc, $recipient, $introText));
 
-                $recipient->update(['sent_at' => now()]);
-                $sent++;
+                    $recipient->update(['sent_at' => now()]);
+                    $sent++;
+                } catch (\Throwable $e) {
+                    report($e);
+                }
             });
 
         if ($sent > 0 && $doc->sent_at === null) {

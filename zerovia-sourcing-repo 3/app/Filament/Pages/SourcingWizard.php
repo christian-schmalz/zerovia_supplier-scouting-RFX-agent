@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Services\GeocodingService;
 use App\Services\NogaService;
 use App\Services\RfqGeneratorService;
 use App\Services\SourcingService;
@@ -167,11 +168,14 @@ class SourcingWizard extends Page implements HasForms
 
     private function buildParams(array $data): array
     {
+        $location = $data['location'] ?? 'Zürich';
+        $coords   = app(GeocodingService::class)->geocode($location);
+
         return [
             'noga_codes'      => array_filter(array_map('trim', explode(',', $data['noga_codes_raw'] ?? ''))),
-            'location'        => $data['location'] ?? 'Zürich',
-            'lat'             => 47.3769, // TODO: geocode location
-            'lng'             => 8.5417,
+            'location'        => $location,
+            'lat'             => $coords['lat'],
+            'lng'             => $coords['lng'],
             'radius_km'       => (int) ($data['radius_km'] ?? 150),
             'min_esg'         => (int) ($data['min_esg'] ?? 60),
             'max_risk'        => $data['max_risk'] ?? 'all',
