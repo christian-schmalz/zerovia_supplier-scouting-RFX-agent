@@ -1,0 +1,10 @@
+.env
+**/vendor/
+**/node_modules/
+**/storage/
+**/bootstrap/cache/
+**/public/build/
+**/public/css/
+**/public/js/
+**/composer.lock
+**/package-lock.json
