@@ -40,8 +40,9 @@ class GeocodingService
                     'limit'  => 1,
                 ]);
 
-            if ($response->successful() && $response->json()) {
-                $result = $response->json()[0];
+            $data = $response->json();
+            if ($response->successful() && !empty($data)) {
+                $result = $data[0];
 
                 return [
                     'lat' => (float) $result['lat'],
